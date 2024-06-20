@@ -1,0 +1,14 @@
+- name: Verify config_action
+  ansible.builtin.fail:
+    msg: "The variable 'config_action' must be one of 'remove' or 'add', current: '{{ config_action }}'"
+  when: "config_action not in ['add', 'remove']"
+
+- name: Show Play Information
+  debug:
+    msg: "Connecting to '{{ inventory_hostname }}' as '{{ ansible_user }}' and performing '{{ config_action }}' config."
+
+- name: Configure WLC
+  cisco.ios.ios_config:
+    src: templates/wlc_config.j2
+    diff_against: running
+  diff: true

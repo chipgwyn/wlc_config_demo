@@ -1,0 +1,6 @@
+---
+- name: Configure WLC
+  hosts: wlc
+  become: true
+  roles:
+    - wlc_config

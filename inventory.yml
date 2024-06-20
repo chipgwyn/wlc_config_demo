@@ -1,0 +1,10 @@
+wlc:
+  hosts:
+    n-z2wicon6.stjude.org:
+      # ansible_host: 10.203.0.35    
+  vars:
+    ansible_network_os: cisco.ios.ios
+    ansible_connection: ansible.netcommon.network_cli
+    ansible_user: "{{ lookup('ansible.builtin.env', 'USER') }}admin"
+
+

@@ -1,0 +1,8 @@
+wlan {{ wlan_name }} {{ wlan_id }} {{ wlan_ssid }}
+  security wpa psk set-key ascii 0 {{ wlan_password }}
+  no security wpa akm dot1x
+  security wpa akm psk
+  no shutdown
+wireless tag policy {{ wlan_name }}-policy-tag
+  description "Policy Tag for {{ wlan_name }}-policy-tag"
+  wlan {{ wlan_name }} policy SJCRH-POL-PROF
