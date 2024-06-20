@@ -1,0 +1,22 @@
+---
+- name: Pre-Change Tasks
+  hosts: wlc
+  become: true
+  tasks:
+    - name: Get CPU stats
+      cisco.ios.ios_command:
+        commands:
+          - show processes cpu | include ^CPU utilization
+      register: show_proc_cpu
+
+    - name: Check CPU usage is sane
+      # "CPU utilization for five seconds: 1%/0%; one minute: 0%; five minutes: 0%"
+      ansible.builtin.fail:
+        msg: "CPU is too high for five minutes: {{ show_proc_cpu.stdout_lines[0][0] | regex_findall('five minutes: (\\d+)%') | int }}"
+      when: "show_proc_cpu.stdout_lines[0][0] | regex_findall('five minutes: (\\d+)%') | int  > 30"
+
+    - name: Backup Config
+      cisco.ios.ios_config:
+        backup: yes
+        backup_options:
+          dir_path:  "{{ playbook_dir }}/../config-backups/"
