@@ -1,2 +1,2 @@
-no wireless tag policy {{ wlan_name }}-policy-tag
-no wlan {{ wlan_name }} {{ wlan_id }} {{ wlan_ssid }}
+no wireless tag policy {{ wlan_name|upper }}-policy-tag
+no wlan {{ wlan_name|upper }} {{ wlan_id|int }} {{ wlan_ssid }}
