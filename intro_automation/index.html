@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Automation Intro - WLC Config Demo</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Automation Intro";
+        var mkdocs_page_input_path = "intro_automation.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> WLC Config Demo
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../environment_setup/">Environment Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro_templating/">Templating Intro</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Automation Intro</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#ill-just-write-a-script-to-do-it">I'll just write a script to do it!</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#automation-frameworks">Automation Frameworks</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Ansible</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../ansible_use/">Ansible Demo</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ansible/ansible_inventory/">Inventory</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ansible/ansible_config_push/">Config Push</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">WLC Config Demo</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Getting Started</li>
+      <li class="breadcrumb-item active">Automation Intro</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="automation">Automation</h2>
+<p>We've already touched on this a bit with the use of templates; things are consistent, repeatable, and expected.  This 
+greatly aids the administrators in their day-to-day work, cuts down on errors and misconfigurations, and speeds 
+troubleshooting.   </p>
+<p>The templating is only part of our goal. We've got the config that we're going to apply standardized!  This is great!
+Now we need to get that config onto the device.  The user will take the generated config and copy and paste the config
+onto the device.  This has problems as well.  Sometimes the user might not copy all the config, leaving out a line or
+perhaps a character at the end of the line.  </p>
+<h3 id="ill-just-write-a-script-to-do-it">I'll just write a script to do it!</h3>
+<p>We can write a program to take in a file of wireless lan definitions, combine them with our templates, and then push
+them to the WLC over <a href="https://www.openssh.com/">ssh</a> (<em>ssh is the native connection method for managing the WLC 
+config</em>).  We soon find that writing on our own code to interact with the WLC is fraught with peril.  There are multiple
+ways to authenticate and then gain admin privileges.  We have to write code to identify which method is being used
+and then react accordingly.  This is not insurmountable but isn't strictly in the scope of what we're trying to 
+accomplish.  We forge ahead however and get that solved.   </p>
+<p>At this point we've connected to our device and authenticated.  We now need to enable the config mode of the device at
+which point it may tell us we're not authorized, someone else is already in config mode, or many other various
+possibilities.  Again, not impossible to figure out since we can code to the most likely scenarios and just raise errors
+and abort for unexpected or infrequent use cases.   </p>
+<p>Now we must send our rendered config template to the device.  This is not just copying a file but emulating typing the
+file out line by line to the WLC.  Depending on the device and its current status it may not work well if we send each
+line too fast.  The "config engine" on the device has to interpret the config as it receives each word/line.  If we send
+things too fast it may not be able to keep up and skip some of the config we've sent.  This leaves us in a bad spot of 
+incomplete or errored config, so we may get unexpected results.  Ok, we can slow down the sending of each word/line to
+make sure the device gets all our config.  </p>
+<p>So how exactly do we "make sure" our config was deployed correctly?  Now we should pull the current config of the device
+after we insert and make sure that our lines (in the order specified) exist in the config.  Generally this works pretty
+well but we find some situations where the device has changed the order of the lines from our template or perhaps the
+spacing of the config is changed slightly from our template.  We have to go back to our template and make these changes
+there to match.   </p>
+<p>This works most of the time but we find a situations where even if we slow down the insertion of the config to 5 seconds
+per line we still get errors.  After some troubleshooting we find that these instances happen when the CPU usage of the
+WLC is at 80% or higher.  The high CPU indicates the controller is busy doing other tasks or something has gone wrong.
+Now we must check the CPU before we begin the configuration.  So we code that.</p>
+<p>...</p>
+<p>The point of explaining all this is to illustrate that tasks we believe to be simple and straightforward can become
+cumbersome and complex in practice.   Additionally, the code we've just written is very specific to this use case.
+Assume we wanted to deploy some configuration to a network switch, a linux host, or a windows host.  We now have more
+edge cases to take into consideration.  If we're lucky to have good programmers and who also have a deep understanding
+of the platforms we can modularize the code for re-use and composition.</p>
+<h3 id="automation-frameworks">Automation Frameworks</h3>
+<p>Lucky for us we can stand on the shoulders of giants and those who have come before us and leverage tools built for this 
+specific problem domain.</p>
+<ul>
+<li><a href="https://docs.ansible.com/ansible/latest/getting_started/introduction.html">Ansible</a></li>
+<li><a href="https://docs.saltproject.io/en/master/topics/tutorials/walkthrough.html#salt-in-10-minutes/">Salt</a></li>
+<li><a href="https://www.terraform.io/">Terraform</a></li>
+<li><a href="https://nornir.readthedocs.io/en/latest/">Nornir</a></li>
+<li><a href="https://www.cisco.com/site/us/en/products/networking/catalyst-center/index.html">Cisco Catalyst Center</a></li>
+</ul>
+<p>Some of these are vendor specific, open source, closed source, cater to networking, or cloud environments and services;
+there are lots to choose from based on the specific needs of your situation.  Tooling can be used in concert with each
+other to cover many use cases and platforms.</p>
+<p>For our demo today we will focus on using Ansible and further focus on network automation.</p>
+<h2 id="idempotency">Idempotency</h2>
+<p>Before we get into some details we should cover the idea of idempotency.</p>
+<blockquote>
+<p>Idempotence, is the property of certain operations in mathematics and computer science whereby they can be applied
+multiple times without changing the result beyond the initial application.
+<a href="https://en.wikipedia.org/wiki/Idempotence">Wikipedia</a></p>
+</blockquote>
+<p>For our use this describes the idea that if we make a change to a system, by some function, that repeating that function
+makes no additional change to the system other than the change that was initially made.  </p>
+<p>For example if we wanted to add a wireless lan config to our WLC we can run a function that does that.  If we run that
+function again we're not going to add "additional" config to the system.  The function should recognize that the config
+we want to exist is already there and thus not perform a change.   </p>
+<p>The idea here is that we feel comfortable running an ansible playbook multiple times and it will make no changes once
+the desired state of the device is achieved.</p>
+<h2 id="declarative-vs-imperative-functions">Declarative vs Imperative Functions</h2>
+<p>Most of the automation platforms and frameworks use a "declarative" style of interaction.  This means that we describe
+the intended state of the system and not necessarily the exact steps to get there.  Obviously those have to bd defined
+somewhere, that part is usually covered by the functions provided by the automation platform itself.  We don't (usually)
+have to define those bits.  We tell the platform what we want the system to look like and the platform will decide what
+steps are needed to achieve that state based on the situation.   </p>
+<p>The exact actions that take place to achieve the desired state are written in the "imperative" manner.  The difference 
+here is subtle but should be understood. Imperative is a stringent set of individual steps that achieve the desired
+state.  Whereas declarative defines the ultimate state of the system and composes the steps required to achieve the final
+state based on the current state.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../intro_templating/" class="btn btn-neutral float-left" title="Templating Intro"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ansible_use/" class="btn btn-neutral float-right" title="Ansible Demo">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../intro_templating/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ansible_use/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

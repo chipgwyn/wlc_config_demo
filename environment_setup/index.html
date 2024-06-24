@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Environment Setup - WLC Config Demo</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Environment Setup";
+        var mkdocs_page_input_path = "environment_setup.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> WLC Config Demo
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Environment Setup</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#connect-to-the-lab-host">Connect to the lab host</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#clone-the-lab-git-repository">Clone the lab git repository</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#setup-a-python-virtual-environment">Setup a python virtual environment</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro_templating/">Templating Intro</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro_automation/">Automation Intro</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Ansible</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../ansible_use/">Ansible Demo</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ansible/ansible_inventory/">Inventory</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ansible/ansible_config_push/">Config Push</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">WLC Config Demo</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Getting Started</li>
+      <li class="breadcrumb-item active">Environment Setup</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="environment-setup">Environment Setup</h1>
+<p><img alt="setup" src="https://raw.githubusercontent.com/chipgwyn/wlc_config_demo/main/docs/environment_setup.gif" title="Environment Setup" /></p>
+<h2 id="connect-to-the-lab-host">Connect to the lab host</h2>
+<p>We're going to ssh to the host with your provided username</p>
+<p><code>ssh &lt;username&gt;@&lt;hostname&gt;</code></p>
+<p>If this is the first time connecting to the remote host you will be prompted to save the host's public ssh key.  Answer <code>y</code> to the question</p>
+<pre><code class="language-shell">The authenticity of host 'host.example.com (127.10.20.2)' can't be established.
+ED25519 key fingerprint is SHA256:hcg+1iEUsdfsdfsdfB5OBrl42NwRSDFsdfSFSmGa28bZ6IqRc.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+</code></pre>
+<h2 id="clone-the-lab-git-repository">Clone the lab git repository</h2>
+<p>This lab's setup is contained in a <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories">git repository</a> located at
+https://github.com/chipgwyn/wlc_config_demo.  Git provides a way to manage changes to a set of files.  This is called a Version Control System (VCS).  It allows
+the ability to reference any changed version of a file or set of files while also allowing for collaboration between multiple people and then managing the
+integration of those changes.  As features are added and bugs are fixed we can refer to a single place to see all the work that's going into a project.</p>
+<p>To 'clone' the lab repo run the following command:</p>
+<p><code>git clone https://github.com/chipgwyn/wlc_config_demo.git</code></p>
+<p>The command just copied all the files from the repo from the 'main' branch down to the host and placed it in your current directory.</p>
+<p>Have a look at what was all copied:</p>
+<p><code>tree wlc_config_demo</code></p>
+<p>The output should look something like the following:</p>
+<pre><code class="language-shell">wlc_config_demo/
+├── ansible.cfg
+├── inventory.yml
+├── playbooks
+│   └── configure.yml
+├── requirements.txt
+└── roles
+    └── wlc_config
+        ├── tasks
+        │   └── main.yml
+        ├── templates
+        │   ├── add_definition_wlan_config.j2
+        │   ├── remove_definition_wlan_config.j2
+        │   └── wlc_config.j2
+        └── vars
+            └── main.yml
+
+6 directories, 9 files
+</code></pre>
+<h2 id="setup-a-python-virtual-environment">Setup a python virtual environment</h2>
+<p>The host has python installed on it, however it does not have all the libraries and tools we need to perform our work. 
+Generally we do not want to install all those things into the "system's" python environment, we want to install them
+only for the job we're doing.  Installing a python library is normally done via a tool called <code>pip</code>.  The <code>pip</code> tool
+will reach to <a href="https://pypi.org/"></a> and then download and install the package.  Each package installed is maintained
+independently (usually) of any other packages available. PyPi is just the defacto repository for hosting packages. 
+As bugs are fixed and features are added to packages their versions will change. What happens when the tool you are
+using requires one version of a particular package but another tool (or user) needs a different version? You have 
+problems! The accepted way to work around this issue is to use a <a href="https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments">Python Virtual Environment</a>
+. The idea is to use the same overall Python version your system uses but have a separate installation of specific 
+packages to meet your needs.</p>
+<p>To create our virtual environment run the following commands:</p>
+<pre><code>cd
+python3 -m venv ./venv
+</code></pre>
+<p>There should now be a directory called 'venv' in your home dir:</p>
+<p><code>ls</code> will show the files </p>
+<p>We have now created the python virtual environment however we must <code>activate</code> it in order to tell the system we want
+to use it over the global system's python.</p>
+<p>To see where your environment is looking for python run <code>which python3</code>.  This should show <code>/usr/bin/python3</code>.</p>
+<p>Now Run the command <code>source ./venv/bin/activate</code>.   You should notice that the prompt in your shell changed to indicate 
+the virtual environment is activated.  It will be prefixed with <code>(venv)</code>.   </p>
+<p>Run <code>which python3</code> again and notice that it will now point to something like <code>/home/&lt;username&gt;/venv/bin/python3</code></p>
+<p>At any time we can run <code>deactivate</code> to switch back to the global system's python.</p>
+<h1 id="install-ansible">Install Ansible</h1>
+<p>Now that we have our virtualenv we can install ansible and related tools and packages.</p>
+<p><strong>NOTE</strong> Before proceeding be sure your python virtual environment is activated!</p>
+<p>As noted before we can install python packages using the <code>pip</code> tool.  Pip will install the package specified and can
+take an argument for the specific version as well.  The really nice thing is that any requested package installation
+will have all of its package dependencies installed along side it, and then any of those package's dependencies!  This
+makes installing a package pretty easy (usually).  </p>
+<p>Lets install the <code>ansible-core</code> package by running <code>pip install ansible-core</code>.   This will get the very bare bits of
+ansible installed along with the minimum required dependencies.   For our lab we want not only <em>ansible-core</em> but
+several of the additional tools as well.   The de-facto standard for what all packages to install for a given project
+is to have them listed in a <code>requirements.txt</code> file.  This file lists the specific package names and versions needed
+for a given environment.</p>
+<p>Move into the <code>wlc_config_demo</code> directory and have a look at the requirements.txt file</p>
+<pre><code>cd wlc_config_demo
+cat requirements.txt
+</code></pre>
+<p>Now we can install each of those packages one at a time or we can just tell pip to do everything listed in the file</p>
+<p>Run the command: <code>pip install -r requirements.txt</code></p>
+<p>You should be seeing a lot of output showing what all is being installed.  Once completed we should be ready to start
+using ansible.  One more thing before we start.   Suppose you want to confirm exactly what all packages and versions
+are installed in your environment.</p>
+<p>Run the command: <code>pip freeze</code></p>
+<p>You should see a list of packages and version installed.  It looks very similar to what was in the requirements.txt file.
+Frequently this is what's used to generate the requirements.txt file.  When you're working on a project and you want to
+save the current list of packages and versions you can just save this output in your requirements.txt and be sure that 
+the environment is the same the next time you want to use it (or need to start over).</p>
+<p>You should now be good to continue with lab</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../intro_templating/" class="btn btn-neutral float-right" title="Templating Intro">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../intro_templating/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

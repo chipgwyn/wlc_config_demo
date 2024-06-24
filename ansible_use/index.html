@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Ansible Demo - WLC Config Demo</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Ansible Demo";
+        var mkdocs_page_input_path = "ansible_use.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> WLC Config Demo
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../environment_setup/">Environment Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro_templating/">Templating Intro</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro_automation/">Automation Intro</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Ansible</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Ansible Demo</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#a-note-on-editors">A Note on Editors</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ansible-demos">Ansible Demos</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ansible/ansible_inventory/">Inventory</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ansible/ansible_config_push/">Config Push</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">WLC Config Demo</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Ansible</li>
+      <li class="breadcrumb-item active">Ansible Demo</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ansible">Ansible</h1>
+<p>For the lab we're going to be using <a href="https://ansible.readthedocs.io/projects/ansible-core/en/devel/getting_started/index.html">Ansible</a>
+to perform most of our work.  Ansible is a framework to do "things" on remote hosts.  There are many ways to connect
+to those hosts and also many "actions" that can be performed on those hosts.  These actions can be configured into 
+"tasks" that can then be composed into a "play".  Further, plays can be made of reusable "roles" to achieve the 
+desired state of a device.</p>
+<p>We'll now configure ansible to connect to our WLC and push the configuration of our wireless lan.</p>
+<h2 id="a-note-on-editors">A Note on Editors</h2>
+<p>When working in the shell of a linux host there are usually at least two tools availble to edit files; vi and nano.
+Which one you choose to use is of personal preference and deciding which one you <em>should</em> use is the source of many
+debates.   For the purpose of this tutorial we'll be using nano.  If you are familiar with vi and would prefer to use
+it, feel free to.  Both are excellent tools.</p>
+<ul>
+<li><a href="https://www.tutorialspoint.com/unix/unix-vi-editor.htm">Using vi</a></li>
+<li><a href="https://help.ubuntu.com/community/Nano">Using nano</a></li>
+</ul>
+<h2 id="ansible-demos">Ansible Demos</h2>
+<ul>
+<li><a href="../ansible/ansible_inventory/">Ansible Inventory</a></li>
+<li><a href="../ansible/ansible_config_push/">Ansible Config Pus</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../intro_automation/" class="btn btn-neutral float-left" title="Automation Intro"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ansible/ansible_inventory/" class="btn btn-neutral float-right" title="Inventory">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../intro_automation/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ansible/ansible_inventory/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
