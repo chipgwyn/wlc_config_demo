@@ -64,6 +64,14 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#our-template-vars">Our Template Vars</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#config-push-playbook">Config Push Playbook</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#running-the-play">Running the play</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#performing-some-checks">Performing some checks</a>
+    </li>
     </ul>
                   </li>
               </ul>
@@ -102,6 +110,117 @@ provides a rich ability to override depending on where it is placed.  Perhaps yo
 certain types of device override that default with something more appropriate.  For a full description of the process
 have a look at <a href="https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#ansible-variable-precedence">Ansible Variable Precedence</a>. </p>
 <h2 id="our-template-vars">Our Template Vars</h2>
+<p>When using ansible playbooks to deploy configuration, our automation goal is re-usability.  We've written a playbook
+and a role to push our intended configuration to the device.  However, we have not yet defined any vars to fill out
+our template.  Since each time we deploy a wireless lan we will likely have unique values.  </p>
+<p>We could have a set of vars files that defines every single one of our wireless lan configs.  The workflow would then
+be to edit this config file, add the new wireless lan, commit the files to git, and then have a git pipeline to do 
+the actual deployment.  However, that is beyond the scope of this demo.</p>
+<p>For our purposes, each user will have a specific wireless lan to deploy.</p>
+<p>Let's create a file for our wireless lan and put in all the vars needed.</p>
+<p>Create and edit <code>data.yml</code> file and fill in the following (filling in the information provided for your pod):</p>
+<pre><code class="language-yaml">---
+wlan_name: SJCRH-Pod1
+wlan_id: 100
+wlan_ssid: SJCRH-Pod1
+wlan_password: THE_POD1_PASSWORD
+</code></pre>
+<p><img alt="Ansible data.yml edit" src="../ansible_data_yaml.gif" /></p>
+<p>Now when we run ansible we can reference this file of vars and it will be used in our playbook and template to push
+the config to the device.  Let's do that now.</p>
+<h2 id="config-push-playbook">Config Push Playbook</h2>
+<p>First lets take a look at our playbook.</p>
+<pre><code class="language-shell">(venv) chip@sazcisauto1:~/wlc_config_demo$ cat playbooks/configure.yml
+---
+- name: Configure WLC
+  hosts: wlc
+  become: true
+  roles:
+    - wlc_config
+</code></pre>
+<p>This playbook doesn't really have any 'tasks'.  It only calls a role: 'wlc_config'.  Since we don't really need to do
+anything other than push the config at the moment.  </p>
+<p>Let's take a look at the role.</p>
+<pre><code class="language-shell">(venv) chip@sazcisauto1:~/wlc_config_demo$ cat roles/wlc_config/tasks/main.yml
+- name: Verify config_action
+  ansible.builtin.fail:
+    msg: &quot;The variable 'config_action' must be one of 'remove' or 'add', current: '{{ config_action }}'&quot;
+  when: &quot;config_action not in ['add', 'remove']&quot;
+
+- name: Show Play Information
+  debug:
+    msg: &quot;Connecting to '{{ inventory_hostname }}' as '{{ ansible_user }}' and performing '{{ config_action }}' config.&quot;
+
+- name: Configure WLC
+  cisco.ios.ios_config:
+    src: templates/wlc_config.j2
+    diff_against: running
+  diff: true
+</code></pre>
+<p>Our role contains three tasks, let's walk through them.</p>
+<p>The first task checks to make sure we're either going to 'add' or 'remove' config.  If our 'config_action' is anything
+other than 'add' or 'remove' it will raise an error and abort.</p>
+<p>The second task is outputting some info about our play.  Indicating what device we're connecting to "inventory_hostname"
+, which in our case is the 'n-z2wicon6.stjude.org' host.  Then showing us exactly what user we're connecting as and then
+finally what 'config_action' we are performing.   Again, this task doesn't really do anything but is there to help the
+user understand what's happening.   </p>
+<p>Finally we get to the third task.  This one will connect to the host via ssh, login using the username we specified
+earlier, render the template of config with our vars, and then put that config onto the device.  Finally it will show
+us the config that was added or removed.   All this is done with just those few lines.  </p>
+<h3 id="running-the-play">Running the play</h3>
+<p>Let's now actually run the play which will call the role and do our config</p>
+<p><code>ansible-playbook playbooks/configure.yml -e @data.yml -k</code></p>
+<p>It will prompt you for your password.  Enter your 'admin' password and it should take care of the rest.</p>
+<p><em>NOTE</em>: It may take a minute or so to complete.</p>
+<p><img alt="Ansible Playbook Simple Add" src="../ansible_playbook_simple_add.gif" /></p>
+<p>Take a look at the output from the last play.  You'll notice that some lines have a <code>+</code> in front of them.  Those are the
+bits config we just pushed!</p>
+<p><em>Congrats!</em></p>
+<h2 id="performing-some-checks">Performing some checks</h2>
+<p>Previously, when speaking about writing our own tool to push config there was mention of checking the CPU on the device
+prior to attempting to make a change.  Let's integrate that into our automation now.</p>
+<p>Take a look at the <code>playbooks/pre_change.yml</code> playbook:</p>
+<pre><code class="language-shell">(venv) chip@sazcisauto1:~/wlc_config_demo$ cat playbooks/pre_change.yml
+---
+- name: Pre-Change Tasks
+  hosts: wlc
+  become: true
+  tasks:
+    - name: Get CPU stats
+      cisco.ios.ios_command:
+        commands:
+          - show processes cpu | include ^CPU utilization
+      register: show_proc_cpu
+
+    - name: Check CPU usage is sane
+      # &quot;CPU utilization for five seconds: 1%/0%; one minute: 0%; five minutes: 0%&quot;
+      ansible.builtin.fail:
+        msg: &quot;CPU is too high for five minutes: {{ show_proc_cpu.stdout_lines[0][0] | regex_findall('five minutes: (\\d+)%') | int }}&quot;
+      when: &quot;show_proc_cpu.stdout_lines[0][0] | regex_findall('five minutes: (\\d+)%') | int  &gt; 60&quot;
+
+    - name: Backup Config
+      cisco.ios.ios_config:
+        backup: yes
+        backup_options:
+          dir_path:  &quot;{{ playbook_dir }}/../config-backups/&quot;
+</code></pre>
+<p>Here we have 3 tasks.  The idea is we want to run this BEFORE making any changes to our device.  This is a standard set
+of tasks everyone should do before we actually try and make a change on any device. </p>
+<p>The first thing done is to run a command to get the cpu utilization of the device.  The second task checks the output of
+that and makes sure the value is sane.  That is, checking to see if utilization is below 60%.  If it is greater than 60%,
+raise an error and abort.  The third and final task is to make a backup of the config and save it locally, just in case 
+something goes wrong and break.</p>
+<p>Let's run this playbook now:</p>
+<p>`ansible-playbook playbooks/pre_change.yml -k'</p>
+<p>Once again, enter your 'admin' password at the prompt.</p>
+<p>Ansible will now go and perform the tasks.  When completed you can feel confident about making any further changes.</p>
+<p>If you'd like, run the playbook again but this time increase the verbosity of ansible to display more data about what
+its doing.</p>
+<p><code>ansible-playbook playbooks/pre_change.yml -k -v</code></p>
+<p>Now take a look into the <code>config-backups/</code> directory.  You should see one or more copies of the running config from the
+WLC, each with the name of the host and a time and date stamp added.</p>
+<p><code>ls -la config-backups/</code></p>
+<p><img alt="Ansible Pre Change Playbook" src="../ansible_pre_change_playbook.gif" /></p>
               
             </div>
           </div><footer>
