@@ -45,5 +45,21 @@ the config to the device.  Let's do that now.
 
 First lets take a look at our playbook.
 
+```shell
+(venv) chip@sazcisauto1:~/wlc_config_demo$ cat playbooks/configure.yml
+---
+- name: Configure WLC
+  hosts: wlc
+  become: true
+  roles:
+    - wlc_config
+```
+
+This playbook doesn't really have any 'tasks'.  It only calls a role: 'wlc_config'.  Since we don't really need to do
+anything other than push the config at the moment.  
+
+Let's take a look at the role.
+
+
 
 
