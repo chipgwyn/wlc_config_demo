@@ -15,5 +15,5 @@ start.
 
 The goal of this exercise is to deploy your own "test" SSID to a Cisco Wireless Lan Controller (WLC) using automation.
 
-Our automation journey begins: [WLC Config Demo]()
+Our automation journey begins: [WLC Config Demo](https://chipgwyn.github.io/wlc_config_demo/)
  
