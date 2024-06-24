@@ -66,3 +66,34 @@ there are lots to choose from based on the specific needs of your situation.  To
 other to cover many use cases and platforms.
 
 For our demo today we will focus on using Ansible and further focus on network automation.
+
+## Idempotency
+
+Before we get into some details we should cover the idea of idempotency.
+
+> Idempotence, is the property of certain operations in mathematics and computer science whereby they can be applied
+> multiple times without changing the result beyond the initial application.
+[Wikipedia](https://en.wikipedia.org/wiki/Idempotence)
+
+For our use this describes the idea that if we make a change to a system, by some function, that repeating that function
+makes no additional change to the system other than the change that was initially made.  
+
+For example if we wanted to add a wireless lan config to our WLC we can run a function that does that.  If we run that
+function again we're not going to add "additional" config to the system.  The function should recognize that the config
+we want to exist is already there and thus not perform a change.   
+
+The idea here is that we feel comfortable running an ansible playbook multiple times and it will make no changes once
+the desired state of the device is achieved.
+
+## Declarative vs Imperative Functions
+
+Most of the automation platforms and frameworks use a "declarative" style of interaction.  This means that we describe
+the intended state of the system and not necessarily the exact steps to get there.  Obviously those have to bd defined
+somewhere, that part is usually covered by the functions provided by the automation platform itself.  We don't (usually)
+have to define those bits.  We tell the platform what we want the system to look like and the platform will decide what
+steps are needed to achieve that state based on the situation.   
+
+The exact actions that take place to achieve the desired state are written in the "imperative" manner.  The difference 
+here is subtle but should be understood. Imperative is a stringent set of individual steps that achieve the desired
+state.  Whereas declarative defines the ultimate state of the system and composes the steps required to achieve the final
+state based on the current state.
