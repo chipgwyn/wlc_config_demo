@@ -14,3 +14,6 @@ have a look at [Ansible Variable Precedence](https://docs.ansible.com/ansible/la
 
 ## Our Template Vars
 
+When using ansible playbooks to deploy configuration, our automation goal is re-usability.  We've written a playbook
+and a role to push our intended configuration to the device.  However we have not yet defined any vars to fill out
+our template.  

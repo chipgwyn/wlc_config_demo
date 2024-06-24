@@ -39,6 +39,9 @@ wlc:
 
 Now hit `Ctrl-x` to save and exit the editor. Hit `y` to confirm you want to save.
 
+![Ansible Inventory Edit](ansible-inventory.gif)
+
+
 Note that since this is a YAML file, spacing *IS* important, so be sure the number of leading spaces for each line
 is correct.  In the examples, we'll be using the standard of 2 spaces for each level of hierarchy.
 

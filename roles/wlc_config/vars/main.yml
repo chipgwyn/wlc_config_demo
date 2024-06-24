@@ -1,6 +1,6 @@
 ---
 config_action: add
-wlan_name: wlan-foo
-wlan_id: 200
-wlan_ssid: foonet
-wlan_password: f0obAr80100
+wlan_name: wlan-CHANGE-ME
+wlan_id: CHANGE-ME
+wlan_ssid: CHANGE-ME
+wlan_password: CHANGE-ME
