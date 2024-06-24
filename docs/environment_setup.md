@@ -11,7 +11,7 @@ We're going to ssh to the host with your provided username
 
 If this is the first time connecting to the remote host you will be prompted to save the host's public ssh key.  Answer `y` to the question
 
-```
+```shell
 The authenticity of host 'host.example.com (127.10.20.2)' can't be established.
 ED25519 key fingerprint is SHA256:hcg+1iEUsdfsdfsdfB5OBrl42NwRSDFsdfSFSmGa28bZ6IqRc.
 This key is not known by any other names.
@@ -31,13 +31,13 @@ To 'clone' the lab repo run the following command:
 
 The command just copied all the files from the repo from the 'main' branch down to the host and placed it in your current directory.
 
-Have a look at what was all copied
+Have a look at what was all copied:
 
 `tree wlc_config_demo`
 
 The output should look something like the following:
 
-```
+```shell
 wlc_config_demo/
 ├── ansible.cfg
 ├── inventory.yml

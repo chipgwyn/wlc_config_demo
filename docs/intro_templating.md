@@ -48,7 +48,7 @@ aids the administrators learn how the overall pieces fit together for a more com
 
 Move into the 'other' directory.
 
-```
+```shell
 cd ~/wlc_config_demo
 cd other
 ls -la
@@ -61,7 +61,7 @@ Files:
 
 Variable definitions in the data.yml file:
 
-```
+```shell
 $ cat data.yml
 wlan_name: wlan-pod1
 wlan_id: 20
@@ -71,7 +71,7 @@ wlan_password: $%mySuperSeCRetPas44**
 
 Running the `demo.py` script:
 
-```
+```shell
 $ ./demo.py
 wlan WLAN-POD1 20 Pod1-Net
   security wpa psk set-key ascii 0 $%mySuperSeCRetPas44**

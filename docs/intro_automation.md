@@ -54,7 +54,6 @@ of the platforms we can modularize the code for re-use and composition.
 Lucky for us we can stand on the shoulders of giants and those who have come before us and leverage tools built for this 
 specific problem domain.
 
-Automation Frameworks:
  - [Ansible](https://docs.ansible.com/ansible/latest/getting_started/introduction.html)
  - [Salt](https://docs.saltproject.io/en/master/topics/tutorials/walkthrough.html#salt-in-10-minutes/)
  - [Terraform](https://www.terraform.io/)

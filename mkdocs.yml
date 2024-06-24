@@ -1,0 +1,14 @@
+site_name: WLC Config Demo
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Environment Setup: environment_setup.md
+    - Templating Intro: intro_templating.md
+    - Automation Intro: intro_automation.md
+  - Ansible:
+      - Ansible Demo: ansible_use.md
+      - Inventory: ansible/ansible_inventory.md
+      - Config Push: ansible/ansible_config_push.md
+
+theme: readthedocs

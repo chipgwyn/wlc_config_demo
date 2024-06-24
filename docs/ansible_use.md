@@ -18,41 +18,7 @@ it, feel free to.  Both are excellent tools.
 - [Using vi](https://www.tutorialspoint.com/unix/unix-vi-editor.htm)
 - [Using nano](https://help.ubuntu.com/community/Nano)
 
+## Ansible Demos
 
-## Inventory
-
-Firstly we need to define our target host, the host where we'll be pushing our config.
-Make sure you are in the `wlc_config_demo` directory:
-
-`cd ~/wlc_config_demo`
-
-Ansible uses an [inventory](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html) file to define
-hosts, groups, and different attributes.  You can have multiple inventory files.  The file can be manually filled or be 
-generated and filled on-demand by querying some other service like azure or ServiceNow.  Since we only have a single
-host, a simple setup, we'll edit the file manually.
-
-`nano inventory.yml`
-
-The contents should look like the following:
-
-```yaml
-wlc:
-  hosts:
-    somehost.example.com:
-      ansible_network_os: cisco.ios.ios
-      ansible_connection: ansible.netcommon.network_cli
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  - [Ansible Inventory](ansible/ansible_inventory.md)
+  - [Ansible Config Pus](ansible/ansible_config_push.md)
